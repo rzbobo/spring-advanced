@@ -26,11 +26,11 @@ public class AuthService {
     @Transactional
     public SignupResponse signup(SignupRequest signupRequest) {
 
+        // 레벨 1-1: Early Return
         // 암호화하기전에 이메일 유효성 검사를 실시해서 불필요한 과정을 최소화
         if (userRepository.existsByEmail(signupRequest.getEmail())) {
             throw new InvalidRequestException("이미 존재하는 이메일입니다.");
         }
-        // ㅇㅇㅇㅇ 
 
         String encodedPassword = passwordEncoder.encode(signupRequest.getPassword());
 
