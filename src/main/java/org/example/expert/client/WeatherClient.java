@@ -28,10 +28,11 @@ public class WeatherClient {
 
         WeatherDto[] weatherArray = responseEntity.getBody();
 
-        // Level 2. 불필요한 if - else문 피하기
+        // Level 1-2 불필요한 if - else문 피하기
         // HttpStatus.OK.equals(responseEntity.getStatusCode())  <- weatherArray == null || weatherArray.length == 0로 대체 가능
         // 해당 else문 제거 및 if문 조건 변경
         // weatherArray == null || weatherArray.length == 0 해당 코드가 더 직관적임.
+
         if (weatherArray == null || weatherArray.length == 0) {
             throw new ServerException("날씨 데이터를 가져오는데 실패했습니다. 상태 코드: " + responseEntity.getStatusCode());
         }

@@ -1,5 +1,6 @@
 package org.example.expert.domain.user.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.expert.domain.common.annotation.Auth;
 import org.example.expert.domain.common.dto.AuthUser;
@@ -20,8 +21,10 @@ public class UserController {
         return ResponseEntity.ok(userService.getUser(userId));
     }
 
+    // Level 1-3 Validation
+    // DTO에서 데이터 유효성 검증을 하는 로직이 존재하기 때문에 @Valid 어노테이션을 앞에 붙여줘야 함.
     @PutMapping("/users")
-    public void changePassword(@Auth AuthUser authUser, @RequestBody UserChangePasswordRequest userChangePasswordRequest) {
+    public void changePassword(@Auth AuthUser authUser, @Valid @RequestBody UserChangePasswordRequest userChangePasswordRequest) {
         userService.changePassword(authUser.getId(), userChangePasswordRequest);
     }
 }
