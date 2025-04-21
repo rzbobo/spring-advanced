@@ -35,6 +35,11 @@ public class ManagerService {
         Todo todo = todoRepository.findById(todoId)
                 .orElseThrow(() -> new InvalidRequestException("Todo not found"));
 
+        // 이 부분에 User에 대한 유효성 검사를 진행하지 않았기 때문에 나왔던 오류같음
+        if(todo.getUser() == null) {
+            throw new InvalidRequestException("담당자를 등록하려고 하는 유저가 일정을 만든 유저가 유효하지 않습니다.");
+        }
+
         if (!ObjectUtils.nullSafeEquals(user.getId(), todo.getUser().getId())) {
             throw new InvalidRequestException("담당자를 등록하려고 하는 유저가 일정을 만든 유저가 유효하지 않습니다.");
         }
@@ -60,6 +65,9 @@ public class ManagerService {
         Todo todo = todoRepository.findById(todoId)
                 .orElseThrow(() -> new InvalidRequestException("Todo not found"));
 
+        if(todo.getUser() == null) {
+            throw new InvalidRequestException("User not found");
+        }
         List<Manager> managerList = managerRepository.findByTodoIdWithUser(todo.getId());
 
         List<ManagerResponse> dtoList = new ArrayList<>();

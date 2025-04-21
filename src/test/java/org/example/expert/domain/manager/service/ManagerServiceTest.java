@@ -26,6 +26,16 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
+// 1번 케이스
+// 테스트 패키지 package org.example.expert.domain.manager.service; 의 ManagerServiceTest 의 클래스에 있는
+// manager_목록_조회_시_Todo가_없다면_NPE_에러를_던진다() 테스트가 성공하고 컨텍스트와 일치하도록
+// 테스트 코드와 테스트 코드 메서드 명을 수정해 주세요.
+
+
+// 3번 케이스
+// 테스트 패키지 org.example.expert.domain.manager.service의 ManagerServiceTest 클래스에 있는
+// todo의_user가_null인_경우_예외가_발생한다() 테스트가 성공할 수 있도록 서비스 로직을 수정해 주세요.
+
 @ExtendWith(MockitoExtension.class)
 class ManagerServiceTest {
 
@@ -38,17 +48,34 @@ class ManagerServiceTest {
     @InjectMocks
     private ManagerService managerService;
 
+
+// 1번 케이스
+// 테스트 패키지 package org.example.expert.domain.manager.service; 의 ManagerServiceTest 의 클래스에 있는
+// manager_목록_조회_시_Todo가_없다면_NPE_에러를_던진다() 테스트가 성공하고 컨텍스트와 일치하도록
+// 테스트 코드와 테스트 코드 메서드 명을 수정해 주세요.
+// 1. NPE가 아니라 Invalid오류이므로 테스트 메서드 명을 변경하기
+// 2. 오류출력 메세지를 서비스 코드에서 설정해 놓은 오류 출력 메세지와 동일하게 설정하기
     @Test
-    public void manager_목록_조회_시_Todo가_없다면_NPE_에러를_던진다() {
+    public void manager_목록_조회_시_Todo가_없다면_InvalidRequestException_에러를_던진다() {
         // given
         long todoId = 1L;
         given(todoRepository.findById(todoId)).willReturn(Optional.empty());
 
         // when & then
         InvalidRequestException exception = assertThrows(InvalidRequestException.class, () -> managerService.getManagers(todoId));
-        assertEquals("Manager not found", exception.getMessage());
+        assertEquals("Todo not found", exception.getMessage());
     }
 
+// 3번 케이스
+// 테스트 패키지 org.example.expert.domain.manager.service의 ManagerServiceTest 클래스에 있는
+// todo의_user가_null인_경우_예외가_발생한다() 테스트가 성공할 수 있도록 서비스 로직을 수정해 주세요.
+// 그럼 일단 해당 테스트 코드가 틀린 게 아니라는 가정을 하고 수정을 진행해야 함
+// Unexpected exception type thrown, expected: <org.example.expert.domain.common.exception.InvalidRequestException> but was: <java.lang.NullPointerException>
+// 해당 오류가 나오는데, Invalid가 나와야하는데 NPE가 나온다라는 뜻.
+// 서비스 코드에서 USER가 NULL인 경우를 if문으로 가정해 예외 지정을 해줘야 할 듯 함.
+// 확인해보니 save할 때, user에 대한 유효성 검사를 진행하지 않고
+// user에서 값을 받아온 값에 대해서만 유효성 검사를 진행함 <<- user가 null일 가능성을 배제
+// -> 따라서 user 유효성 검사 로직 추가
     @Test
     void todo의_user가_null인_경우_예외가_발생한다() {
         // given

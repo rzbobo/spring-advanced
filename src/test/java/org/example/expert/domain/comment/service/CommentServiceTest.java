@@ -5,6 +5,7 @@ import org.example.expert.domain.comment.dto.response.CommentSaveResponse;
 import org.example.expert.domain.comment.entity.Comment;
 import org.example.expert.domain.comment.repository.CommentRepository;
 import org.example.expert.domain.common.dto.AuthUser;
+import org.example.expert.domain.common.exception.InvalidRequestException;
 import org.example.expert.domain.common.exception.ServerException;
 import org.example.expert.domain.todo.entity.Todo;
 import org.example.expert.domain.todo.repository.TodoRepository;
@@ -23,6 +24,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 
+// 2번 케이스
+// 테스트 패키지 org.example.expert.domain.comment.service; 의 CommentServiceTest 의 클래스에 있는
+// comment_등록_중_할일을_찾지_못해_에러가_발생한다() 테스트가 성공할 수 있도록 테스트 코드를 수정해 주세요.
+
+
 @ExtendWith(MockitoExtension.class)
 class CommentServiceTest {
 
@@ -33,6 +39,12 @@ class CommentServiceTest {
     @InjectMocks
     private CommentService commentService;
 
+// 2번 케이스
+// 테스트 패키지 org.example.expert.domain.comment.service; 의 CommentServiceTest 의 클래스에 있는
+// comment_등록_중_할일을_찾지_못해_에러가_발생한다() 테스트가 성공할 수 있도록 테스트 코드를 수정해 주세요.
+// 서비스 코드를 보고 이에 맞게 테스트 코드 수정 해주기
+// invalid 오류를 가져와야하는데 server로 받아오려함
+// 수정해주기
     @Test
     public void comment_등록_중_할일을_찾지_못해_에러가_발생한다() {
         // given
@@ -43,7 +55,7 @@ class CommentServiceTest {
         given(todoRepository.findById(anyLong())).willReturn(Optional.empty());
 
         // when
-        ServerException exception = assertThrows(ServerException.class, () -> {
+        InvalidRequestException exception = assertThrows(InvalidRequestException.class, () -> {
             commentService.saveComment(authUser, todoId, request);
         });
 
