@@ -34,7 +34,7 @@ public class WeatherClient {
         // weatherArray == null || weatherArray.length == 0 해당 코드가 더 직관적임.
 
         if (weatherArray == null || weatherArray.length == 0) {
-            throw new ServerException("날씨 데이터를 가져오는데 실패했습니다. 상태 코드: " + responseEntity.getStatusCode());
+            throw new ServerException("날씨 데이터가 존재하지 않아 데이터를 가져오는데 실패했습니다. 상태 코드: " + responseEntity.getStatusCode());
         }
 
         String today = getCurrentDate();
