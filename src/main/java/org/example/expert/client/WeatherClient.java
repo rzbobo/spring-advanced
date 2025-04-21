@@ -29,12 +29,14 @@ public class WeatherClient {
         WeatherDto[] weatherArray = responseEntity.getBody();
 
         // Level 1-2 불필요한 if - else문 피하기
-        // HttpStatus.OK.equals(responseEntity.getStatusCode())  <- weatherArray == null || weatherArray.length == 0로 대체 가능
-        // 해당 else문 제거 및 if문 조건 변경
-        // weatherArray == null || weatherArray.length == 0 해당 코드가 더 직관적임.
+        // 각각 다른 에러를 처리하는 조건문이기 때문에
+        // 코드 가독성과 직관성을 위해 각각의 IF문으로 분리
+        if (!HttpStatus.OK.equals(responseEntity.getStatusCode())) {
+            throw new ServerException("날씨 데이터를 가져오는데 실패했습니다. 상태 코드: " + responseEntity.getStatusCode());
+        }
 
         if (weatherArray == null || weatherArray.length == 0) {
-            throw new ServerException("날씨 데이터가 존재하지 않아 데이터를 가져오는데 실패했습니다. 상태 코드: " + responseEntity.getStatusCode());
+            throw new ServerException("날씨 데이터가 없습니다.");
         }
 
         String today = getCurrentDate();
